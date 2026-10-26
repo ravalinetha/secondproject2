@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="852b6247-e260-4af1-84d8-494dcc99321e" >
+		<http:listener-connection host="localhost" port="8082" />
+	</http:listener-config>
+	<http:listener-config name="HTTP_Listener_config1" doc:name="HTTP Listener config" doc:id="18c41054-7ba2-4221-8ef6-b9c6bb03e0ca" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="secondproject2Flow" doc:id="166de815-0e25-4fe5-8738-170c43676048" >
+		<http:listener doc:name="Listener" doc:id="3165fda2-8c97-4b09-9573-5e24b679e429" config-ref="HTTP_Listener_config1" path="/second" />
+		<set-payload value='#[%dw 2.0&#10;output application/json&#10;--- &#10; {&#10;"Email": "ravaliadepu3@gmail.com",&#10;"course":"muelsoft"&#10;}]' doc:name="Set Payload" doc:id="43811de8-d7fd-4dd7-bec8-cff50ce92172" />
+		<logger level="INFO" doc:name="Logger" doc:id="74c78001-58fa-4622-af67-d8a1f2d3c73c" message="#[payload]" />
+		<ee:transform doc:name="Transform Message" doc:id="6503e936-0f56-462a-acf8-396a8491ff3d">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+---
+//{
+//	"email":"ravaliadepu3@gmailcom",
+//	"course" :"muelsoft"
+//}
+data:payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
